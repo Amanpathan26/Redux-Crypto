@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import loaderImg from "../assets/loader.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { cryptoApi } from "../redux/slice/cryptoApi";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
     const dispatch = useDispatch();
     const cryptoData = useSelector((state) => state.cryptoApi.data);
-    const isLoading = useSelector((state) => state.cryptoApi.isLoading);
     const isError = useSelector((state) => state.cryptoApi.isError);
     const currency = useSelector((state) => state.currency.value);
     const currencySymbol = useSelector((state) => state.currency.symbol);
@@ -16,8 +15,15 @@ export default function Home() {
     const [filterType, setFilterType] = useState("name");
     const navigate = useNavigate();
 
+    const [initialLoading, setInitialLoading] = useState(true);
+
     useEffect(() => {
-        dispatch(cryptoApi());
+        dispatch(cryptoApi()).then(() => setInitialLoading(false));
+
+        setInterval(() => {
+            dispatch(cryptoApi());
+        }, 2000);
+
     }, [dispatch, currency]);
 
     const filteredData = cryptoData?.filter((coin) => {
@@ -49,13 +55,13 @@ export default function Home() {
                     <input
                         type="text"
                         placeholder="Search for a coin..."
-                        className="p-2 w-full border border-gray-300 rounded focus:outline-none"
+                        className="p-2 grow-2 border border-gray-300 rounded focus:outline-none"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
 
                     <select
-                        className="focus:outline-none text-black border border-gray-300 rounded p-2 w-full sm:w-auto"
+                        className="focus:outline-none text-black border border-gray-300 rounded p-2"
                         onChange={filterHandler}
                         value={filterType}
                     >
@@ -65,7 +71,7 @@ export default function Home() {
                     </select>
                 </div>
 
-                {!isLoading ? (
+                {!initialLoading ? (
                     filteredData && filteredData.length > 0 ? (
                         <table className="min-w-full border border-collapse text-sm md:text-base">
                             <thead className="sticky top-0 bg-gray-100">

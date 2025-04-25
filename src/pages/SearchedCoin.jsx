@@ -7,14 +7,19 @@ function SearchedCoin() {
     const { coinName } = useParams(); 
     const dispatch = useDispatch();
     const cryptoData = useSelector(state => state.cryptoApi.data); 
-    const isLoading = useSelector(state => state.cryptoApi.isLoading); 
+    
     const currencySymbol = useSelector(state => state.currency.symbol); 
     const currency = useSelector(state => state.currency.value); 
+
+     const [initialLoading, setInitialLoading] = useState(true);
 
     const [coin, setCoin] = useState(null); 
 
     useEffect(() => {
-        dispatch(cryptoApi());
+        dispatch(cryptoApi()).then(() => setInitialLoading(false));
+         setInterval(() => {
+            dispatch(cryptoApi());
+        }, 2000);
     }, [dispatch, currency]);
 
     useEffect(() => {
@@ -22,7 +27,7 @@ function SearchedCoin() {
         setCoin(foundCoin);
     }, [cryptoData, coinName, currency]); 
 
-    if (isLoading) {
+    if (initialLoading) {
         return (
             <div className="h-[90vh] flex justify-center items-center">
                 <div className="text-center">
