@@ -51,7 +51,7 @@ export default function Home() {
     return (
         <>
             <main className="w-[98%] h-[85vh] mx-auto mt-4 overflow-x-auto">
-                <div className="flex mb-1">
+                <div className="flex mb-1 flex-col sm:flex-row">
                     <input
                         type="text"
                         placeholder="Search for a coin..."
