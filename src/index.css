@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&display=swap');
+@import "tailwindcss";
+
+.home {
+  font-family: "Comic Relief", system-ui;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 1.6rem;
+  color: #fff;
+}
+
+th{
+  padding: 1rem .5rem;
+  border-bottom: 1px solid #00000050;
+}
+
+tr{
+  border-bottom: 1px solid #00000050;
+}
+
+td{
+  text-align: end;
+  padding: 1.5rem .5rem;
+}
+
+tbody td:nth-of-type(2){
+  text-align: start;
+}
